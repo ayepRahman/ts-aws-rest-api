@@ -10,41 +10,56 @@ const createUser = async (
   password: string
 ): Promise<APIGatewayProxyResult> => {
   const timestamp = new Date().getTime();
-  const params = {
+  const params: DocumentClient.PutItemInput = {
     // come from serverless.yml environment
     TableName: process.env.DYNAMODB_TABLE || "",
     Item: {
       id: uuidv4(),
-      username,
-      email,
-      password,
+      username: username,
+      email: email,
+      password: password,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
+    //TODO: need to figure whil condition expression not working
+    ConditionExpression:
+      "attribute_not_exists(username) AND attribute_not_exists(email)",
   };
 
-  await dynamoDb.put(params).promise();
-
-  return {
-    statusCode: 200,
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(params.Item),
-  };
+  return await dynamoDb
+    .put(params)
+    .promise()
+    .then((data) => {
+      console.log("SUCCESS", data);
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(params.Item),
+      };
+    })
+    .catch((error) => {
+      console.log("ERROR", error);
+      return {
+        statusCode: 400,
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ error }),
+      };
+    });
 };
 
 const checkUserEmailExist = async (email: string) => {
-  console.log("checkUserEmailExist: res", email);
+  console.log("checkUserEmailExist", email);
   const params: DocumentClient.GetItemInput = {
     // come from serverless.yml environment
     TableName: process.env.DYNAMODB_TABLE || "",
     Key: {
-      email,
+      email: email,
     },
   };
 
   const res = await dynamoDb.get(params).promise();
 
-  console.log("checkUserEmailExist: res", res);
+  console.log("checkUserEmailExist: RESPONSE", res);
 };
 
 export default {

@@ -7,6 +7,7 @@ const userSchema = yup.object().shape({
 });
 
 const userValidation = async (data: any) => {
+  console.log("userValidation", data);
   await userSchema.validate(data);
 };
 

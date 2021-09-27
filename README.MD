@@ -32,7 +32,7 @@
 
 ### Command Line
 
-- config - serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_KEY --profile <PROFILE_NAME or USER created for AWS> e.g"serverless-admin"
+- config - serverless config credentials --provider aws --key <ACCESS_KEY> --secret <SECRET_KEY> --profile <PROFILE_NAME or USER created for AWS> e.g"serverless-admin"
 - create a lambda function - `$ sls create --template aws-nodejs --path <name of the function> e.g hello-world`
 - deploy a lambda stack - `$ sls deploy --verbose`
 - deploy a function - `$ sls deploy function -f <function-name>`
@@ -43,4 +43,9 @@
 
 ### Hints
 
-- You have to deploy API in APIGATEWAY and see STAGES to view api url
+- To view endpoint url - api gateway > stages
+- Issue with Not able to find Resouce - check trace in cloudformation, check variable in serverless yaml file is correct OR delete cloud formation stack and redeploy
+
+## Known issues
+
+- absolute import - https://github.com/microsoft/TypeScript/issues/10866

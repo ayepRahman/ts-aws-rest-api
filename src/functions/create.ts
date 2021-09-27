@@ -5,8 +5,8 @@ import {
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
 } from "aws-lambda";
-import userValidation from "validations/userValidation";
-import userService from "services/userService";
+import userValidation from "../validations/userValidation";
+import userService from "../services/userService";
 
 export const createUser: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent
@@ -28,11 +28,12 @@ export const createUser: APIGatewayProxyHandler = async (
       };
     }
 
-    // validate user data
-
-    await userService.checkUserEmailExist(data?.email);
-
-    await userValidation(data);
+    // validate user dataq
+    await userValidation({
+      username: data?.username,
+      email: data?.email,
+      password: data?.password,
+    });
 
     return await userService.createUser(
       data?.username,
