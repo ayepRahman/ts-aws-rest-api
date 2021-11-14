@@ -177,6 +177,36 @@ Caching API responses
   - Access-Control-Allow-Headers
   - Access-Control-Allow-Origin
 
+## API Gateway - Security IAM Permissions
+
+- Create an IAM policy authorization and attach to User/ Role
+- Authentication = IAM | Authorization = IAM Policy
+- Good to provide access within AWS (EC2, Lambda, IAM users...)
+- Leverages "Sug v4" capability where IAM credential are in headers
+
+## API Gateway - Security Cognito User Pools
+
+- Cognito fully manages user lifecycle, token expires automatically
+- API gatway verifies identiry automatically from AWS Cognito
+- No custom implementation required
+- Authentication = Cognito User Pools | Authorization = API Gateway Methods
+
+## API AGteway - Security Lambda Authorizer (formerly Custom Authorizers)
+
+- Token base authorizer (bearer token) - ex JWT or 0Auth
+- A request parameter-based Lambda authorizer (header, query string, stage var)
+- Lambda must return an IAM policy for the user, result policy is cached
+- Authentication = Externa; | Authorization = Lambda function
+
+## API Agteway - WebSocket API - Overview
+
+- What's WebSocket?
+  - Two-way interactive communication between a client and server (Persistent connection)
+  - Server can push information to the client
+  - This enables stateful application user cases
+- WebSocket APIs are often used in real-time application such as chat applications, collaboration platforms, etc....
+- Works with AWS Services (Lambda, DynamoDB) or HTTP endpoint
+
 ### Hints
 
 - To view endpoint url - api gateway > stages
